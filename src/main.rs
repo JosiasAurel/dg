@@ -26,7 +26,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut count = 0;
 
     loop {
-        if count == 2 {
+        if count == 3 {
             break;
         }
       println!("Definition -> {}", defs[count]["definition"]);
