@@ -31,3 +31,7 @@ Definition -> "A programmable electronic device that performs mathematical calcu
 - Make sure you have the latest version of Rust install
 - Change directory into the project and run `cargo build --release` for a release build.
 - If you just want to run without optimizations, then run `cargo run <your-word>`
+
+## TODO
+
+- [ ] Add caching so that it will read from a local database if the word has already been searched.
