@@ -1,0 +1,295 @@
+Array [
+    Object {
+        "license": Object {
+            "name": String("CC BY-SA 3.0"),
+            "url": String("https://creativecommons.org/licenses/by-sa/3.0"),
+        },
+        "meanings": Array [
+            Object {
+                "antonyms": Array [
+                    String("indifference"),
+                    String("angst"),
+                    String("hate"),
+                    String("hatred"),
+                    String("malice"),
+                    String("spite"),
+                ],
+                "definitions": Array [
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("Strong affection."),
+                        "synonyms": Array [],
+                    },
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("A person who is the object of romantic feelings; a darling, a sweetheart, a beloved."),
+                        "synonyms": Array [],
+                    },
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("A term of friendly address, regardless of feelings."),
+                        "example": String("Hello love, how can I help you?"),
+                        "synonyms": Array [],
+                    },
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("A thing, activity etc which is the object of one's deep liking or enthusiasm."),
+                        "synonyms": Array [],
+                    },
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("Sexual desire; attachment based on sexual attraction."),
+                        "synonyms": Array [],
+                    },
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("Sexual activity."),
+                        "synonyms": Array [],
+                    },
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("An instance or episode of being in love; a love affair."),
+                        "synonyms": Array [],
+                    },
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("Used as the closing, before the signature, of a letter, especially between good friends or family members, or by the young."),
+                        "synonyms": Array [],
+                    },
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("Alternative letter-case form of Love."),
+                        "synonyms": Array [],
+                    },
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("A thin silk material."),
+                        "synonyms": Array [],
+                    },
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("A climbing plant, Clematis vitalba."),
+                        "synonyms": Array [],
+                    },
+                ],
+                "partOfSpeech": String("noun"),
+                "synonyms": Array [
+                    String("baby"),
+                    String("darling"),
+                    String("honey"),
+                    String("love bird"),
+                    String("lover"),
+                    String("pet"),
+                    String("sweetheart"),
+                    String("romance"),
+                    String("coitus"),
+                    String("sex"),
+                    String("the beast with two backs"),
+                    String("aphrodisia"),
+                    String("carnality"),
+                    String("darling"),
+                    String("lover"),
+                    String("mate"),
+                    String("sweetheart"),
+                    String("sweetie"),
+                ],
+            },
+            Object {
+                "antonyms": Array [
+                    String("despise"),
+                    String("hate"),
+                ],
+                "definitions": Array [
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("(usually transitive, sometimes intransitive, stative) To have a strong affection for (someone or something)."),
+                        "example": String("I love my spouse. \u{a0} I love you!"),
+                        "synonyms": Array [],
+                    },
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("To need, thrive on."),
+                        "example": String("Mold loves moist, dark places."),
+                        "synonyms": Array [],
+                    },
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("To be strongly inclined towards something; an emphatic form of like."),
+                        "example": String("I love walking barefoot on wet grass;\u{a0} I'd love to join the team;\u{a0} I love what you've done with your hair"),
+                        "synonyms": Array [],
+                    },
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("(usually transitive, sometimes intransitive) To care deeply about, to be dedicated to (someone or something)."),
+                        "synonyms": Array [],
+                    },
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("To derive delight from a fact or situation."),
+                        "example": String("I love the fact that the coffee shop now offers fat-free chai latte."),
+                        "synonyms": Array [],
+                    },
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("To have sex with (perhaps from make love)."),
+                        "example": String("I wish I could love her all night long."),
+                        "synonyms": Array [],
+                    },
+                ],
+                "partOfSpeech": String("verb"),
+                "synonyms": Array [
+                    String("adore"),
+                    String("cherish"),
+                    String("enjoy"),
+                    String("go to bed with"),
+                    String("sleep with"),
+                ],
+            },
+        ],
+        "phonetic": String("/lʊv/"),
+        "phonetics": Array [
+            Object {
+                "audio": String(""),
+                "text": String("/lʊv/"),
+            },
+            Object {
+                "audio": String(""),
+                "text": String("/lʊv/"),
+            },
+            Object {
+                "audio": String("https://api.dictionaryapi.dev/media/pronunciations/en/love-uk.mp3"),
+                "license": Object {
+                    "name": String("BY 3.0 US"),
+                    "url": String("https://creativecommons.org/licenses/by/3.0/us"),
+                },
+                "sourceUrl": String("https://commons.wikimedia.org/w/index.php?curid=9023210"),
+                "text": String("/lʌv/"),
+            },
+            Object {
+                "audio": String("https://api.dictionaryapi.dev/media/pronunciations/en/love-us.mp3"),
+                "license": Object {
+                    "name": String("BY-SA 3.0"),
+                    "url": String("https://creativecommons.org/licenses/by-sa/3.0"),
+                },
+                "sourceUrl": String("https://commons.wikimedia.org/w/index.php?curid=876723"),
+                "text": String("/lʌv/"),
+            },
+        ],
+        "sourceUrls": Array [
+            String("https://en.wiktionary.org/wiki/love"),
+        ],
+        "word": String("love"),
+    },
+    Object {
+        "license": Object {
+            "name": String("CC BY-SA 3.0"),
+            "url": String("https://creativecommons.org/licenses/by-sa/3.0"),
+        },
+        "meanings": Array [
+            Object {
+                "antonyms": Array [],
+                "definitions": Array [
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("To praise; commend."),
+                        "synonyms": Array [],
+                    },
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("To praise as of value; prize; set a price on."),
+                        "synonyms": Array [],
+                    },
+                ],
+                "partOfSpeech": String("verb"),
+                "synonyms": Array [],
+            },
+        ],
+        "phonetic": String("/lʊv/"),
+        "phonetics": Array [
+            Object {
+                "audio": String(""),
+                "text": String("/lʊv/"),
+            },
+            Object {
+                "audio": String(""),
+                "text": String("/lʊv/"),
+            },
+            Object {
+                "audio": String("https://api.dictionaryapi.dev/media/pronunciations/en/love-uk.mp3"),
+                "license": Object {
+                    "name": String("BY 3.0 US"),
+                    "url": String("https://creativecommons.org/licenses/by/3.0/us"),
+                },
+                "sourceUrl": String("https://commons.wikimedia.org/w/index.php?curid=9023210"),
+                "text": String("/lʌv/"),
+            },
+            Object {
+                "audio": String("https://api.dictionaryapi.dev/media/pronunciations/en/love-us.mp3"),
+                "license": Object {
+                    "name": String("BY-SA 3.0"),
+                    "url": String("https://creativecommons.org/licenses/by-sa/3.0"),
+                },
+                "sourceUrl": String("https://commons.wikimedia.org/w/index.php?curid=876723"),
+                "text": String("/lʌv/"),
+            },
+        ],
+        "sourceUrls": Array [
+            String("https://en.wiktionary.org/wiki/love"),
+        ],
+        "word": String("love"),
+    },
+    Object {
+        "license": Object {
+            "name": String("CC BY-SA 3.0"),
+            "url": String("https://creativecommons.org/licenses/by-sa/3.0"),
+        },
+        "meanings": Array [
+            Object {
+                "antonyms": Array [],
+                "definitions": Array [
+                    Object {
+                        "antonyms": Array [],
+                        "definition": String("(racquet sports) Zero, no score."),
+                        "example": String("So that’s fifteen-love to Kournikova."),
+                        "synonyms": Array [],
+                    },
+                ],
+                "partOfSpeech": String("noun"),
+                "synonyms": Array [],
+            },
+        ],
+        "phonetic": String("/lʊv/"),
+        "phonetics": Array [
+            Object {
+                "audio": String(""),
+                "text": String("/lʊv/"),
+            },
+            Object {
+                "audio": String(""),
+                "text": String("/lʊv/"),
+            },
+            Object {
+                "audio": String("https://api.dictionaryapi.dev/media/pronunciations/en/love-uk.mp3"),
+                "license": Object {
+                    "name": String("BY 3.0 US"),
+                    "url": String("https://creativecommons.org/licenses/by/3.0/us"),
+                },
+                "sourceUrl": String("https://commons.wikimedia.org/w/index.php?curid=9023210"),
+                "text": String("/lʌv/"),
+            },
+            Object {
+                "audio": String("https://api.dictionaryapi.dev/media/pronunciations/en/love-us.mp3"),
+                "license": Object {
+                    "name": String("BY-SA 3.0"),
+                    "url": String("https://creativecommons.org/licenses/by-sa/3.0"),
+                },
+                "sourceUrl": String("https://commons.wikimedia.org/w/index.php?curid=876723"),
+                "text": String("/lʌv/"),
+            },
+        ],
+        "sourceUrls": Array [
+            String("https://en.wiktionary.org/wiki/love"),
+        ],
+        "word": String("love"),
+    },
+]
