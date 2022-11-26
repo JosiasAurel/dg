@@ -1,6 +1,7 @@
-use std::collections::HashMap;
+// use std::collections::HashMap;
+use serde_json::Value;
 
-type Response = Vec<HashMap<String, Vec<HashMap<String, Vec<HashMap<String, String>>>>>>;
+// type Response = Vec<HashMap<String, Vec<HashMap<String, Vec<HashMap<String, String>>>>>>;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     
@@ -10,7 +11,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let url = format!("https://api.dictionaryapi.dev/api/v2/entries/en/{}", word);
 
     let response = reqwest::blocking::get(&url)?;
-    let result = response.json::<Response>()?;
+    let result = response.json::<Value>()?;
 
     println!("{:#?}", result);
 
