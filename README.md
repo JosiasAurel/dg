@@ -1,7 +1,7 @@
 
 # dg
 
-A CLI tool that outputs definitions.
+A CLI tool that outputs definitions. It keeps a local copy of every query you make, making it very fast if you query the same word more than once.
 
 ## How to use
 
