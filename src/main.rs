@@ -3,6 +3,7 @@ use serde_json::Value;
 use std::collections::HashMap;
 use std::env;
 use std::fs;
+use std::process;
 
 #[derive(Serialize, Deserialize, Clone)]
 struct WordInfo {
@@ -21,9 +22,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         dir.to_str().unwrap().trim_end_matches("dg"),
         dictionary_name
     );
-    println!("Path = {}", dictionary_path);
+    // println!("Path = {}", dictionary_path);
     let args: Vec<String> = std::env::args().skip(1).collect();
-    let word = args.get(0).expect("Please enter a word");
+    let fallback = String::from("[DEFAULT]");
+    let word = args.get(0).unwrap_or(&fallback);
 
     let url = format!("https://api.dictionaryapi.dev/api/v2/entries/en/{}", word);
 
@@ -33,6 +35,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn dg_routine(dictionary_path: &str, word: &String, url: &str) {
+    if word == &String::from("[DEFAULT]") {
+        println!("Missing word to define");
+        process::exit(0x0100);
+    }
     let file_contents = fs::read_to_string(dictionary_path).unwrap_or_else(|_| String::from(""));
 
     let mut dictionary: Dictionary =
