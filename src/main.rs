@@ -25,95 +25,81 @@ impl std::fmt::Display for WordInfo {
 }
 
 type Dictionary = HashMap<String, WordInfo>;
+type Res<T> = Result<T, Box<dyn std::error::Error>>;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let dictionary_name: &str = "/.dg-dict.json";
-    let dir = env::current_exe()?;
-    let dictionary_path = &format!(
-        "{}{}",
-        dir.to_str().unwrap().trim_end_matches("dg"),
-        dictionary_name
-    );
+const DICTIONARY_NAME: &str = ".dg-dict.json";
+
+fn main() -> Res<()> {
+    let dir = env::current_dir()?;
+    let dictionary_path = &format!("{}/{DICTIONARY_NAME}", dir.display());
     // println!("Path = {}", dictionary_path);
     let args: Vec<String> = std::env::args().skip(1).collect();
-    let fallback = String::from("[DEFAULT]");
-    let word = args.get(0).unwrap_or(&fallback);
+    let Some(word) = args.first() else {
+        eprintln!("missing word to define");
+        process::exit(0x0100);
+    };
 
-    let url = format!("https://api.dictionaryapi.dev/api/v2/entries/en/{}", word);
-
-    dg_routine(dictionary_path, word, &url);
-
+    let word_info = get_word_info(dictionary_path, word)?;
+    println!("{word_info}");
     Ok(())
 }
 
-fn dg_routine(dictionary_path: &str, word: &String, url: &str) {
-    if word == &String::from("[DEFAULT]") {
-        println!("Missing word to define");
-        process::exit(0x0100);
+fn get_word_info(dictionary_path: &str, word: &String) -> Res<WordInfo> {
+    let file_contents = fs::read_to_string(dictionary_path).unwrap_or_default();
+
+    let mut dictionary: Dictionary = miniserde::json::from_str(&file_contents).unwrap_or_default();
+    if let Some(cache_hit) = dictionary.get(word) {
+        return Ok(cache_hit.clone());
     }
-    let file_contents = fs::read_to_string(dictionary_path).unwrap_or_else(|_| String::from(""));
 
-    let mut dictionary: Dictionary =
-        miniserde::json::from_str(&file_contents).unwrap_or_else(|_| Dictionary::new());
-
-    if dictionary.contains_key(word) {
-        let word_info = dictionary
-            .get(word)
-            .expect("Failed to get word definition from local database");
-        println!("{word_info}");
+    let url = format!("https://api.dictionaryapi.dev/api/v2/entries/en/{word}");
+    let response = minreq::get(url).send()?;
+    let json = response.as_str()?;
+    let result: Vec<Value> = miniserde::json::from_str(json)?;
+    let first_dict_item = result.first().ok_or("no definitions received")?;
+    let Value::Object(first_dict_item) = first_dict_item else {
+        return Err("got unknown dictionary item".into());
+    };
+    let fallback = String::from("null");
+    let phonetic = if let Some(Value::String(phon)) = first_dict_item.get("phonetic") {
+        phon
     } else {
-        let response = minreq::get(url).send().expect("Failed to fetch");
-        let json = response
-            .as_str()
-            .expect("Failed to convert response to text");
-        let res: Vec<Value> =
-            miniserde::json::from_str(json).expect("Failed to parse JSON response");
-        let first_dict_item = res.first().expect("no definitions received");
-        let Value::Object(first_dict_item) = first_dict_item else {
-            panic!("got unknown dictionary item");
-        };
-        let fallback = String::from("null");
-        let phonetic = if let Some(Value::String(phon)) = first_dict_item.get("phonetic") {
-            phon
-        } else {
-            &fallback
-        };
-        let Some(Value::Array(meanings)) = first_dict_item.get("meanings") else {
-            panic!("received unknown kind of meanings");
-        };
-        let Some(Value::Object(first_meaning)) = meanings.first() else {
-            panic!("received unknown kind of definition");
-        };
+        &fallback
+    };
+    let Some(Value::Array(meanings)) = first_dict_item.get("meanings") else {
+        return Err("received unknown kind of meanings".into());
+    };
+    let Some(Value::Object(first_meaning)) = meanings.first() else {
+        return Err("received unknown kind of definition".into());
+    };
 
-        let part_of_speech = if let Some(Value::String(pos)) = first_meaning.get("partOfSpeech") {
-            pos
-        } else {
-            &fallback
-        };
-        let Some(Value::Array(defs)) = first_meaning.get("definitions") else {
-            panic!("no known definitions found");
-        };
-        let deserialized_defs = defs.iter().take(3).map(|d| {
-            let mut definition = fallback.clone();
-            if let Value::Object(def) = d {
-                if let Some(Value::String(def)) = def.get("definition") {
-                    definition = def.clone();
-                }
+    let part_of_speech = if let Some(Value::String(pos)) = first_meaning.get("partOfSpeech") {
+        pos
+    } else {
+        &fallback
+    };
+    let Some(Value::Array(defs)) = first_meaning.get("definitions") else {
+        return Err("no known definitions found".into());
+    };
+    let deserialized_defs = defs.iter().take(3).map(|raw_definition| {
+        let mut definition = &fallback;
+        if let Value::Object(def) = raw_definition {
+            if let Some(Value::String(def)) = def.get("definition") {
+                definition = def;
             }
-            definition
-        });
+        }
+        definition
+    });
 
-        let word_and_def: WordInfo = WordInfo {
-            phonetic: phonetic.to_string(),
-            part_of_speech: part_of_speech.to_string(),
-            definitions: deserialized_defs.collect(),
-        };
+    let word_and_def = WordInfo {
+        phonetic: phonetic.clone(),
+        part_of_speech: part_of_speech.clone(),
+        definitions: deserialized_defs.cloned().collect(),
+    };
 
-        dictionary.insert(String::from(word), word_and_def.clone());
-        let dictionary_str = miniserde::json::to_string(&dictionary);
+    dictionary.insert(String::from(word), word_and_def.clone());
+    let dictionary_str = miniserde::json::to_string(&dictionary);
+    fs::write(dictionary_path, dictionary_str)?;
 
-        fs::write(dictionary_path, dictionary_str).expect("Failed to write to dictionary");
-
-        println!("{word_and_def}");
-    }
+    Ok(word_and_def)
 }
