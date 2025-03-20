@@ -1,5 +1,6 @@
 use miniserde::{json::Value, Deserialize, Serialize};
 use std::collections::HashMap;
+use std::io::IsTerminal;
 use std::{env, fs, process};
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -37,6 +38,11 @@ fn main() -> Res<()> {
 }
 
 fn parse_opts(args: &[String]) -> Res<(String, &String)> {
+    let is_help = |arg: &String| matches!(arg.as_str(), "-h" | "--help");
+    if args.iter().any(is_help) {
+        println!("USAGE: dg [-h|--help] <WORD>");
+        process::exit(0);
+    }
     let dictionary_path = if let Ok(env_dict_path) = env::var("DG_DICT_PATH") {
         env_dict_path
     } else {
