@@ -9,6 +9,21 @@ struct WordInfo {
     definitions: Vec<String>,
 }
 
+impl std::fmt::Display for WordInfo {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        writeln!(f, "Phonetic: {}", self.phonetic)?;
+        writeln!(f, "Part of speech: {}", self.part_of_speech)?;
+        writeln!(f)?;
+        writeln!(f, "Definitions")?;
+        writeln!(f)?;
+
+        for definition in &self.definitions {
+            writeln!(f, "Definition -> {definition:?}")?;
+        }
+        Ok(())
+    }
+}
+
 type Dictionary = HashMap<String, WordInfo>;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -45,7 +60,7 @@ fn dg_routine(dictionary_path: &str, word: &String, url: &str) {
         let word_info = dictionary
             .get(word)
             .expect("Failed to get word definition from local database");
-        print_word_info(word_info);
+        println!("{word_info}");
     } else {
         let response = minreq::get(url).send().expect("Failed to fetch");
         let json = response
@@ -99,18 +114,6 @@ fn dg_routine(dictionary_path: &str, word: &String, url: &str) {
 
         fs::write(dictionary_path, dictionary_str).expect("Failed to write to dictionary");
 
-        print_word_info(&word_and_def);
-    }
-}
-
-fn print_word_info(word_info: &WordInfo) {
-    println!("Phonetic: {}", word_info.phonetic);
-    println!("Part of speech: {}", word_info.part_of_speech);
-    println!();
-    println!("Definitions");
-    println!();
-
-    for definition in word_info.definitions.iter() {
-        println!("Definition -> {}", definition);
+        println!("{word_and_def}");
     }
 }
