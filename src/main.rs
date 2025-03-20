@@ -27,33 +27,42 @@ impl std::fmt::Display for WordInfo {
 type Dictionary = HashMap<String, WordInfo>;
 type Res<T> = Result<T, Box<dyn std::error::Error>>;
 
-const DICTIONARY_NAME: &str = ".dg-dict.json";
-
 fn main() -> Res<()> {
-    let dir = env::current_dir()?;
-    let dictionary_path = &format!("{}/{DICTIONARY_NAME}", dir.display());
-    // println!("Path = {}", dictionary_path);
     let args: Vec<String> = std::env::args().skip(1).collect();
-    let Some(word) = args.first() else {
-        eprintln!("missing word to define");
-        process::exit(0x0100);
-    };
+    let (dictionary_path, word) = parse_opts(&args)?;
 
-    let word_info = get_word_info(dictionary_path, word)?;
+    let word_info = get_word_info(&dictionary_path, word)?;
     println!("{word_info}");
     Ok(())
 }
 
-fn get_word_info(dictionary_path: &str, word: &String) -> Res<WordInfo> {
-    let file_contents = fs::read_to_string(dictionary_path).unwrap_or_default();
+fn parse_opts(args: &[String]) -> Res<(String, &String)> {
+    let dictionary_path = if let Ok(env_dict_path) = env::var("DG_DICT_PATH") {
+        env_dict_path
+    } else {
+        const DICTIONARY_NAME: &str = ".dg-dict.json";
+        format!("{}/{DICTIONARY_NAME}", env::current_dir()?.display())
+    };
+    let Some(word) = args.first() else {
+        eprintln!("missing word to define");
+        process::exit(0x0100);
+    };
+    Ok((dictionary_path, word))
+}
 
-    let mut dictionary: Dictionary = miniserde::json::from_str(&file_contents).unwrap_or_default();
+fn get_word_info(dictionary_path: &str, word: &str) -> Res<WordInfo> {
+    let cache_content = fs::read_to_string(dictionary_path).unwrap_or_default();
+
+    let mut dictionary: Dictionary = miniserde::json::from_str(&cache_content).unwrap_or_default();
     if let Some(cache_hit) = dictionary.get(word) {
         return Ok(cache_hit.clone());
     }
 
     let url = format!("https://api.dictionaryapi.dev/api/v2/entries/en/{word}");
-    let response = minreq::get(url).send()?;
+    let response = minreq::get(url).with_timeout(8).send()?;
+    if response.status_code == 404 {
+        return Err(format!("no known definition found for '{word}', check typo").into());
+    }
     let json = response.as_str()?;
     let result: Vec<Value> = miniserde::json::from_str(json)?;
     let first_dict_item = result.first().ok_or("no definitions received")?;
