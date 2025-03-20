@@ -51,13 +51,11 @@ fn dg_routine(dictionary_path: &str, word: &String, url: &str) {
         let json = response
             .as_str()
             .expect("Failed to convert response to text");
-        eprintln!("response as json: {json:?}");
         let res: Vec<Value> =
             miniserde::json::from_str(json).expect("Failed to parse JSON response");
-        eprintln!("response as parsed json: {res:#?}");
-        let first_dict_item = res.first().expect("got unknown object");
+        let first_dict_item = res.first().expect("no definitions received");
         let Value::Object(first_dict_item) = first_dict_item else {
-            panic!("got unknown object");
+            panic!("got unknown dictionary item");
         };
         let fallback = String::from("null");
         let phonetic = if let Some(Value::String(phon)) = first_dict_item.get("phonetic") {
@@ -66,10 +64,10 @@ fn dg_routine(dictionary_path: &str, word: &String, url: &str) {
             &fallback
         };
         let Some(Value::Array(meanings)) = first_dict_item.get("meanings") else {
-            panic!("unknown meanings returned");
+            panic!("received unknown kind of meanings");
         };
         let Some(Value::Object(first_meaning)) = meanings.first() else {
-            panic!("unknown definition got");
+            panic!("received unknown kind of definition");
         };
 
         let part_of_speech = if let Some(Value::String(pos)) = first_meaning.get("partOfSpeech") {
@@ -81,15 +79,13 @@ fn dg_routine(dictionary_path: &str, word: &String, url: &str) {
             panic!("no known definitions found");
         };
         let deserialized_defs = defs.iter().take(3).map(|d| {
+            let mut definition = fallback.clone();
             if let Value::Object(def) = d {
                 if let Some(Value::String(def)) = def.get("definition") {
-                    def.clone()
-                } else {
-                    fallback.clone()
+                    definition = def.clone();
                 }
-            } else {
-                fallback.clone()
             }
+            definition
         });
 
         let word_and_def: WordInfo = WordInfo {
