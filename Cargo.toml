@@ -11,7 +11,5 @@ opt-level = "z"
 strip = true
 
 [dependencies]
-reqwest = { version= "0.11", features= ["json", "blocking"]} 
-serde = { version= "1.0.148", features= ["derive"] } 
-serde_json = "1.0.88"
-syn = "1.0.104"
+miniserde = "0.1.42"
+minreq = { version = "2.13.3", features = ["https"] }
