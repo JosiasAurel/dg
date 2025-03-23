@@ -33,7 +33,12 @@ fn main() -> Res<()> {
     let (dictionary_path, word) = parse_opts(&args)?;
 
     let word_info = get_word_info(&dictionary_path, word)?;
-    println!("{word_info}");
+    if !std::io::stdout().is_terminal() {
+        let data = miniserde::json::to_string(&word_info);
+        println!("{data}");
+    } else {
+        println!("{word_info}");
+    }
     Ok(())
 }
 
