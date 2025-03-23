@@ -1,7 +1,6 @@
 use miniserde::{json::Value, Deserialize, Serialize};
-use std::collections::HashMap;
 use std::io::IsTerminal;
-use std::{env, fs, process};
+use std::{env, fmt, fs, io, process};
 
 #[derive(Serialize, Deserialize, Clone)]
 struct WordInfo {
@@ -10,8 +9,8 @@ struct WordInfo {
     definitions: Vec<String>,
 }
 
-impl std::fmt::Display for WordInfo {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl fmt::Display for WordInfo {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         writeln!(f, "Phonetic: {}", self.phonetic)?;
         writeln!(f, "Part of speech: {}", self.part_of_speech)?;
         writeln!(f)?;
@@ -25,15 +24,15 @@ impl std::fmt::Display for WordInfo {
     }
 }
 
-type Dictionary = HashMap<String, WordInfo>;
+type Dictionary = std::collections::HashMap<String, WordInfo>;
 type Res<T> = Result<T, Box<dyn std::error::Error>>;
 
 fn main() -> Res<()> {
-    let args: Vec<String> = std::env::args().skip(1).collect();
+    let args: Vec<String> = env::args().skip(1).collect();
     let (dictionary_path, word) = parse_opts(&args)?;
 
     let word_info = get_word_info(&dictionary_path, word)?;
-    if std::io::stdout().is_terminal() {
+    if io::stdout().is_terminal() {
         println!("{word_info}");
     } else {
         let data = miniserde::json::to_string(&word_info);
